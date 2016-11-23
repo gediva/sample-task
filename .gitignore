@@ -46,3 +46,12 @@
 
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
+
+# Bower components directory
+web/components
+
+var/cache
+var/logs
+var/sessions
+var/SymfonyRequirements.php
+var/bootstrap.php.cache
