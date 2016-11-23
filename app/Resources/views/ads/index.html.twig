@@ -1,0 +1,120 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div class="row">
+    <div class="col-sm-9 col-xs-12">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Skelbimu lenta</h3>
+          </div>
+          <div class="panel-body">
+            {% if is_granted('ROLE_USER') %}
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#all-ads" data-toggle="tab" aria-expanded="true">Visi skelbimai</a></li>
+              <li><a href="#user-ads" data-toggle="tab" aria-expanded="true">Mano skelbimai</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+              <div class="tab-pane fade active in" id="all-ads">
+            {% endif %}
+
+              <div class="row">
+              {% for ad in ads %}
+                  <div class="col-xs-12 single-advertisement">
+                      <h3>{{ ad.getTitle() }}</h3>
+                      <p>{{ ad.getDescription() }}</p>
+                      <div class="row">
+                          <div class="col-sm-4">
+                              <ul class="breadcrumb">
+                                <li class="active">Pridetas: {{ ad.getPostedAt().format('Y-m-d') }}</li>
+                              </ul>
+                          </div>
+                          <div class="col-sm-4">
+                              <ul class="breadcrumb">
+                                  <li class="active">Vartotojas: {{ ad.getUserId().getName() }}</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              {% endfor %}
+              </div>
+            {% if is_granted('ROLE_USER') %}
+              </div>
+              <div class="tab-pane fade" id="user-ads">
+                {% for ad in my_ads %}
+                    <div class="col-xs-12 single-advertisement">
+                        <h3>{{ ad.getTitle() }}</h3>
+                        <p>{{ ad.getDescription() }}</p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="breadcrumb">
+                                  <li class="active">Pridetas: {{ ad.getPostedAt().format('Y-m-d') }}</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="breadcrumb">
+                                    <li class="active">Vartotojas: {{ ad.getUserId().getName() }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('ROLE_USER') %}
+      <div class="col-sm-3 col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Prisijunges, kaip {{ app.user.getName() }}</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                  <a href="/createNew" class="btn btn-primary">Prideti skelbima</a>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <a href="/logout">Atsijungti</a>
+            </div>
+          </div>
+      </div>
+    {% else %}
+        <div class="col-sm-3 col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Prisijungimas</h3>
+            </div>
+            <div class="panel-body">
+              {{ form_start(form) }}
+                  {{ form_row(form.name) }}
+                  {{ form_row(form.password) }}
+
+                  {% if error is defined %}
+                  <div class="panel panel-danger">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Error</h3>
+                    </div>
+                    <div class="panel-body">
+                      {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                  </div>
+                  {% endif %}
+
+                  <input type="submit" value="Prisijungti" class="btn btn-primary" />
+              {{ form_end(form) }}
+            </div>
+            <div class="panel-footer">
+              <a href="/register" class="btn btn-primary">Registruotis</a>
+            </div>
+          </div>
+      </div>
+    {% endif %}
+{% endblock %}

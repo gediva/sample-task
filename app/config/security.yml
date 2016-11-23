@@ -1,0 +1,30 @@
+security:
+    encoders:
+        AppBundle\Entity\Users: bcrypt
+
+    providers:
+        user_provider:
+            entity:
+                class: AppBundle\Entity\Users
+                property: name
+    access_control:
+        - { path: ^/createNew, roles: ROLE_USER }
+        - { path: ^/register, allow_if: "!has_role('ROLE_USER')" }
+        - { path: ^/registerSuccess, allow_if: "!has_role('ROLE_USER')" }
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+                username_parameter: login_form[name]
+                password_parameter: login_form[password]
+
+            logout:
+                path: /logout
+                target: /

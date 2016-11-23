@@ -1,0 +1,26 @@
+ads:
+    path: /
+    defaults: { _controller: AppBundle:Default:index }
+
+register:
+    path: /register
+    defaults: { _controller: AppBundle:Default:register }
+
+main:
+    path: /main
+    defaults: { _controller: AppBundle:Default:mainPage }
+
+createNew:
+    path: /createNew
+    defaults: { _controller: AppBundle:Default:createNew }
+
+registerSuccess:
+    path: /registerSuccess
+    defaults: { _controller: AppBundle:Default:registerSuccess }
+
+login:
+    path: /login
+    defaults: { _controller: AppBundle:Default:login }
+
+logout:
+    path: /logout
